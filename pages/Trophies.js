@@ -8,19 +8,12 @@ import Link from 'next/link'
 //Step 1: Collect all the files from a blogdata directory
 //Step 2: Iterate though them and display them
 
-const Trophies = () => {
-  const [blogs,setblogs] = useState([]);
-  useEffect(()=>{
-    console.log("useEffect is running");
-    fetch('http://localhost:3000/api/blogs').then((a)=>{
-      
-      return a.json();})
-    .then((parsed)=>{
-      
-      console.log(parsed)
-      setblogs(parsed)
-    })
-    }, []) 
+const Trophies = (props) => {
+  console.log(props)
+  const [blogs,setblogs] = useState(props.alltopics);
+  // useEffect(()=>{
+    
+  //   }, []) 
    
    
   
@@ -48,6 +41,22 @@ const Trophies = () => {
   </div>
   </main>
   </div>
+};
+
+export async function getServerSideProps(context) {
+  
+   
+    let data = await fetch('http://localhost:3000/api/blogs')
+      let alltopics = await data.json() 
+      
+
+
+
+    return{
+    props: {alltopics}, // will be passed to the page component as props
+
+    
+  }
 }
 
 export default Trophies

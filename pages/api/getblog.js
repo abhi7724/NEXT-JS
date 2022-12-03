@@ -7,7 +7,7 @@ export default function handler(req, res) {
     let slug = req.query.slug
   fs.readFile(`blogdata/${slug}.json`, 'utf-8' , (err, data)=>{
     if(err){
-        res.status(404``).json({error: "No such blog found"})
+        res.status(404).json({error: "No such blog found"})
     }
     console.log(req.query.slug)
     res.status(200).json(JSON.parse(data))
