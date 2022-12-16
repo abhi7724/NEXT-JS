@@ -1,6 +1,7 @@
 import React, { useEffect,useState } from 'react'
 import styles from '/styles/trophies.module.css'
 import Link from 'next/link'
+import * as fs from 'fs';
 
 
 
@@ -23,7 +24,7 @@ const Trophies = (props) => {
         return <div key={blogitem.slug}>
         <Link href={`/blogpost/${blogitem.slug}`}>
         <h3 className={styles.blogItemh3}>{blogitem.title}</h3></Link>
-        <p className={styles.blogItemp}>{blogitem.content.substr(0,140)}...</p>
+        <p className={styles.blogItemp}>{blogitem.metadesc.substr(0,140)}...</p>
         
       </div>
 })}
@@ -43,11 +44,22 @@ const Trophies = (props) => {
   </div>
 };
 
-export async function getServerSideProps(context) {
+
+
+export async function getStaticProps(context) {
   
    
-    let data = await fetch('http://localhost:3000/api/blogs')
-      let alltopics = await data.json() 
+  let data = await fs.promises.readdir("blogdata");
+  let myfile;
+  let alltopics= [];
+  
+    for (let index = 0; index < data.length; index++) {
+      const item = data[index];
+      console.log(item)
+      myfile = await fs.promises.readFile(('blogdata/' + item), 'utf-8')
+      console.log(myfile)
+      alltopics.push(JSON.parse(myfile))
+    }
       
 
 
